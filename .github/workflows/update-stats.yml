@@ -20,7 +20,7 @@ jobs:
 
       - run: pip install -r requirements.txt
 
-      - run: python create_sig_stats.py
+      - run: python Create_png_of_RWGPS_ride_stats.py
         env:
           RWGPS_API_KEY: ${{ secrets.RWGPS_API_KEY }}
           RWGPS_AUTH_TOKEN: ${{ secrets.RWGPS_AUTH_TOKEN }}

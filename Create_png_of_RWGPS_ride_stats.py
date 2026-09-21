@@ -19,12 +19,11 @@ BG_COLOR = (0xCA, 0x48, 0x6E)   # #CA486E
 TEXT_COLOR = (255, 255, 255)    # white
 WIDTH, HEIGHT = 400, 92
 
-# Arial works locally on Windows; DejaVu Sans is the fallback available
+# Arial works locally on Windows; Liberation Sans is the fallback available
 # on GitHub Actions' Ubuntu runners, so the same script renders correctly
 # on both machines.
-FONT_BOLD_CANDIDATES = ["arialbd.ttf", "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf"]
-FONT_REGULAR_CANDIDATES = ["arial.ttf", "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf"]
-
+FONT_BOLD_CANDIDATES = ["arialbd.ttf", "/usr/share/fonts/truetype/liberation/LiberationSans-Bold.ttf"]
+FONT_REGULAR_CANDIDATES = ["arial.ttf", "/usr/share/fonts/truetype/liberation/LiberationSans-Regular.ttf"]
 
 def load_font(candidates, size):
     for path in candidates:

@@ -2,7 +2,7 @@ name: Update BF signature stats
 
 on:
   schedule:
-    - cron: '0 11 * * *'   # daily at 11:00 UTC (~7am Eastern) — adjust as you like
+    - cron: '0 15 * * *'   # daily at 15:00 UTC (~11am Eastern) — adjust as you like
   workflow_dispatch: {}     # lets you trigger it manually from the Actions tab
 
 permissions:

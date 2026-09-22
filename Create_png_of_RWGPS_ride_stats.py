@@ -15,8 +15,10 @@ RWGPS_AUTH_TOKEN = os.environ["RWGPS_AUTH_TOKEN"]
 OUTPUT_PATH = "cycling_stats_sig.png"
 
 # Flat, two-color palette keeps the PNG small.
-BG_COLOR = (0xCA, 0x48, 0x6E)   # #CA486E
-TEXT_COLOR = (255, 255, 255)    # white
+#BG_COLOR = (0xCA, 0x48, 0x6E)   # #CA486E
+#TEXT_COLOR = (255, 255, 255)    # white
+BG_COLOR = (150, 150, 150)
+TEXT_COLOR = (0, 0, 0)
 WIDTH, HEIGHT = 400, 92
 
 # Arial works locally on Windows; Liberation Sans is the fallback available

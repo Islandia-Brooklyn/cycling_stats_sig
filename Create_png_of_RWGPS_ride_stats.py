@@ -16,12 +16,11 @@ OUTPUT_PATH = "cycling_stats_sig.png"
 
 # Flat, two-color palette keeps the PNG small.
 BG_COLOR = (0xCA, 0x48, 0x6E)   # #CA486E
-TEXT_COLOR = (0, 0, 0)          # black
+TEXT_COLOR = (255, 255, 255)    # white
 WIDTH, HEIGHT = 400, 92
 
-# Arial works locally on Windows; Liberation Sans is the fallback available
-# on GitHub Actions' Ubuntu runners, so the same script renders correctly
-# on both machines.
+# Arial works locally on Windows; Liberation Sans (metric-compatible with
+# Arial) is the fallback installed on GitHub Actions' Ubuntu runners.
 FONT_BOLD_CANDIDATES = ["arialbd.ttf", "/usr/share/fonts/truetype/liberation/LiberationSans-Bold.ttf"]
 FONT_REGULAR_CANDIDATES = ["arial.ttf", "/usr/share/fonts/truetype/liberation/LiberationSans-Regular.ttf"]
 
@@ -32,7 +31,6 @@ def load_font(candidates, size):
         except OSError:
             continue
     return ImageFont.load_default()
-
 
 async def fetch_ytd_stats():
     current_year = datetime.now().year
@@ -63,7 +61,6 @@ async def fetch_ytd_stats():
     longest_mi = longest_m / 1609.34
     return current_year, miles, feet, ride_count, longest_mi
 
-
 def render_png(year, miles, feet, ride_count, longest_mi, path):
     img = Image.new("P", (WIDTH, HEIGHT), color=0)
     img.putpalette(list(BG_COLOR) + list(TEXT_COLOR) + [0] * (256 * 3 - 6))
@@ -71,18 +68,23 @@ def render_png(year, miles, feet, ride_count, longest_mi, path):
 
     font_header = load_font(FONT_BOLD_CANDIDATES, 18)
     font_body = load_font(FONT_REGULAR_CANDIDATES, 15)
+    font_small = load_font(FONT_REGULAR_CANDIDATES, 12)
 
+    now = datetime.now()
     header = f"YTD {year}"
+    updated = f"Updated {now:%b} {now.day}, {now.year}"
     line2 = f"{miles:,.0f} mi., {ride_count} rides, {feet:,.0f} ft ascent"
     line3 = f"Longest ride: {longest_mi:,.1f} mi."
 
     draw.text((10, 6), header, fill=1, font=font_header)
+    # Date stamp, right-aligned on the header row.
+    updated_w = draw.textlength(updated, font=font_small)
+    draw.text((WIDTH - 10 - updated_w, 11), updated, fill=1, font=font_small)
     draw.line((10, 30, WIDTH - 10, 30), fill=1, width=1)  # divider under header
     draw.text((10, 40), line2, fill=1, font=font_body)
     draw.text((10, 64), line3, fill=1, font=font_body)
 
     img.save(path, optimize=True)
-
 
 async def main():
     year, miles, feet, ride_count, longest_mi = await fetch_ytd_stats()
@@ -91,5 +93,5 @@ async def main():
     render_png(year, miles, feet, ride_count, longest_mi, OUTPUT_PATH)
     print(f"Saved {OUTPUT_PATH} ({os.path.getsize(OUTPUT_PATH)} bytes)")
 
-
-asyncio.run(main())
+if __name__ == "__main__":
+    asyncio.run(main())
